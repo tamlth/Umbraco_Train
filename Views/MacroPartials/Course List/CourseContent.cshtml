@@ -1,0 +1,35 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+
+@{
+	var root = Umbraco.ContentAtRoot().FirstOrDefault();
+	var currentPage = Umbraco.AssignedContentItem;
+}
+
+<!-- start course content container -->
+<div class="mu-course-container">
+    <div class="row">
+        @foreach (var item in currentPage.Children())
+	    {
+		<div class="col-md-6 col-sm-6">
+            <div class="mu-latest-course-single">
+                <figure class="mu-latest-course-img">
+                    <a href="@item.Url"><img src="@item.Value("courseImage")" alt="img"></a>
+                    <figcaption class="mu-latest-course-imgcaption">
+                        <a href="@currentPage.Url">@currentPage.Name</a>
+                        <span><i class="fa fa-clock-o"></i>@item.Value("courseDuration")</span>
+                    </figcaption>
+                </figure>
+                <div class="mu-latest-course-single-content">
+                    <h4><a href="@item.Url">@item.Value("courseTitle")</a></h4>
+                    <p>@Html.Truncate(item.Value<string>("courseDescription"),150,true)</p>
+                    <div class="mu-latest-course-single-contbottom">
+                        <a class="mu-course-details" href="@item.Url">Details</a>
+                        <span class="mu-course-price" href="@item.Url">@item.Value("coursePrice")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+	    }
+    </div>
+</div>
+<!-- end course content container -->

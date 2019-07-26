@@ -19,7 +19,7 @@ using Umbraco.ModelsBuilder;
 using Umbraco.ModelsBuilder.Umbraco;
 
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "8450536e5b1f03dd")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "2adbc8a9daef9bc9")]
 [assembly:System.Reflection.AssemblyVersion("0.0.0.1")]
 
 namespace Umbraco.Web.PublishedModels
@@ -87,7 +87,7 @@ namespace Umbraco.Web.PublishedModels
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
 		[ImplementPropertyType("courseDescription")]
-		public string CourseDescription => this.Value<string>("courseDescription");
+		public IHtmlString CourseDescription => this.Value<IHtmlString>("courseDescription");
 
 		///<summary>
 		/// Course Duration
@@ -163,6 +163,13 @@ namespace Umbraco.Web.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
 		[ImplementPropertyType("courseType")]
 		public string CourseType => this.Value<string>("courseType");
+
+		///<summary>
+		/// Page Size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
+		[ImplementPropertyType("pageSize")]
+		public int PageSize => this.Value<int>("pageSize");
 	}
 
 	/// <summary>Courses</summary>

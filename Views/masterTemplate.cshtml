@@ -1,4 +1,8 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+	var root = Umbraco.ContentAtRoot().FirstOrDefault();
+	var currentPage = Umbraco.AssignedContentItem;
+}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -102,6 +106,9 @@
   </div>
   <!-- End search box -->
   
+  @if(currentPage.Id!=root.Id){
+    @Html.Partial("MasterBreadcrumb")
+  }
   @RenderBody()
 
   <!-- Start footer -->

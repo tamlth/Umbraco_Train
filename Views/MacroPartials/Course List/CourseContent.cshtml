@@ -1,14 +1,42 @@
-﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+﻿@using ContentModels = Umbraco.Web.PublishedModels;
+@using Umbraco.Web;
+@inherits Umbraco.Web.Macros.PartialViewMacroPage
 
 @{
 	var root = Umbraco.ContentAtRoot().FirstOrDefault();
 	var currentPage = Umbraco.AssignedContentItem;
+	
+	int pageNumber = 1;
+	int pageSize = 2;
+	//get pageNumber and pageSize by model
+	if (!string.IsNullOrEmpty((string)Model.MacroParameters["pageNumber"]))
+    {
+        int.TryParse((string)Model.MacroParameters["pageNumber"], out pageNumber);
+    }
+	if (!string.IsNullOrEmpty((string)Model.MacroParameters["pageSize"]))
+    {
+        int.TryParse((string)Model.MacroParameters["pageSize"], out pageSize);
+    }
+    
+	var items= currentPage.Children().ToList();
+	var pageCount = (int)Math.Ceiling((double)items.Count / (double)pageSize);
+	
+	//get pageNumber by request
+    if (!string.IsNullOrEmpty(Request.QueryString["page"]))
+    {
+        int.TryParse(Request.QueryString["page"], out pageNumber);
+        if (pageNumber <= 0 || pageNumber > pageCount)
+        {
+            pageNumber = 1;
+        }
+    }
+    
+    var pagingItems= items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 }
-
 <!-- start course content container -->
 <div class="mu-course-container">
     <div class="row">
-        @foreach (var item in currentPage.Children())
+        @foreach (var item in pagingItems)
 	    {
 		<div class="col-md-6 col-sm-6">
             <div class="mu-latest-course-single">
@@ -33,3 +61,29 @@
     </div>
 </div>
 <!-- end course content container -->
+
+@if(pageCount>1)
+{
+<!-- start course pagination -->
+<div class="mu-pagination">
+    <nav>
+        <ul class="pagination">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span class="fa fa-angle-left"></span> Prev
+                </a>
+            </li>
+            @for (int i = 1; i <= pageCount; i++)
+            {
+                <li class="@(pageNumber == i ? "active" : null)"><a href="@(currentPage.Url + "?page=" + i)">@i</a></li>
+            }
+            <li>
+                <a href="#" aria-label="Next">
+                    Next <span class="fa fa-angle-right"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- end course pagination -->
+}

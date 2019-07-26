@@ -3,55 +3,22 @@
 @{
 	Layout = "masterTemplate.cshtml";
 }
-<!-- Page breadcrumb -->
- <section id="mu-page-breadcrumb">
-   <div class="container">
-     <div class="row">
-       <div class="col-md-12">
-         <div class="mu-page-breadcrumb-area">
-           <h2>Course</h2>
-           <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>            
-            <li class="active">Course</li>
-          </ol>
-         </div>
-       </div>
-     </div>
-   </div>
- </section>
- <!-- End breadcrumb -->
- 
+@{
+	var root = Umbraco.ContentAtRoot().FirstOrDefault();
+	var currentPage = Umbraco.AssignedContentItem;
+}
  <section id="mu-course-content">
    <div class="container">
      <div class="row">
        <div class="col-md-12">
          <div class="mu-course-content-area">
             <div class="row">
-              <div class="col-md-9">
-                @Umbraco.RenderMacro("CourseContent")
-                <!-- start course pagination -->
-                <div class="mu-pagination">
-                  <nav>
-                    <ul class="pagination">
-                      <li>
-                        <a href="#" aria-label="Previous">
-                          <span class="fa fa-angle-left"></span> Prev 
-                        </a>
-                      </li>
-                      <li class="active"><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li>
-                        <a href="#" aria-label="Next">
-                         Next <span class="fa fa-angle-right"></span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-                <!-- end course pagination -->
+              <div class="col-md-9"> 
+                @Umbraco.RenderMacro("CourseContent", new 
+                {
+                    pageNumber = "1",
+                    pageSize = Model.PageSize
+                })
               </div>
               <div class="col-md-3">
                 <!-- start sidebar -->
@@ -60,12 +27,10 @@
                   <div class="mu-single-sidebar">
                     <h3>Categories</h3>
                     <ul class="mu-sidebar-catg">
-                      <li><a href="#">Web Design</a></li>
-                      <li><a href="">Web Development</a></li>
-                      <li><a href="">Math</a></li>
-                      <li><a href="">Physics</a></li>
-                      <li><a href="">Camestry</a></li>
-                      <li><a href="">English</a></li>
+                      @foreach(var item in currentPage.Parent.Children)
+                      {
+                        <li><a style="@(currentPage.Url==item.Url ? "color: #01bafd" : "")" href="@item.Url">@item.Name</a></li>
+                      }
                     </ul>
                   </div>
                   <!-- end single sidebar -->
